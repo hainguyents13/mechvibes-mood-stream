@@ -1,4 +1,14 @@
 import { NextRequest } from 'next/server';
+import { JsonObject } from 'type-fest';
+
+type Song = {
+  id: number;
+  name: string;
+  artist_name: string;
+  duration: number; // in seconds
+  image: string;
+  audio: string;
+};
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
@@ -17,9 +27,10 @@ export const GET = async (req: NextRequest) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const { results } = await response.json();
+    const data = await response.json();
+    const results = ((data as JsonObject).results || []) as Song[];
 
-    const songs = results.map((song: any) => ({
+    const songs = results.map((song: Song) => ({
       id: song.id,
       title: song.name,
       artist: song.artist_name,
