@@ -39,7 +39,7 @@ export const GET = async (req: NextRequest) => {
       audio: song.audio,
     }));
 
-    const total_duration = songs.reduce((total: number, song: any) => total + song.duration, 0);
+    const total_duration = songs.reduce((total: number, song) => total + song.duration, 0);
 
     // Return the list of songs
     return new Response(
